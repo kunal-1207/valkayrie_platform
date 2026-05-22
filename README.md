@@ -35,8 +35,8 @@ To expose the internal cluster UIs to your host machine and start the AI engine,
 ```
 
 ### 3. Access the Portals
-- **ArgoCD:** [https://localhost:8081](https://localhost:8081) *(User: `admin` | Pass: `37NaPXEElaGkZfJ0`)*
-- **Grafana:** [http://localhost:3000](http://localhost:3000) *(User: `admin` | Pass: `VZyWFBSTBRIW3HZ90glmjIr4c2WrhZwRBaGVGrlX`)*
+- **ArgoCD:** [https://localhost:8081](https://localhost:8081) *(User: `admin` | Pass: Automatically fetched when running `start-valkyrie.ps1`)*
+- **Grafana:** [http://localhost:3000](http://localhost:3000) *(User: `admin` | Pass: Automatically fetched when running `start-valkyrie.ps1`)*
 
 ---
 
@@ -95,3 +95,17 @@ To test cluster resilience and observe auto-healing, trigger a chaos experiment:
 kubectl apply -f .\chaos\litmus\pod-delete.yaml
 ```
 *Monitor the Grafana dashboards and Falco logs to observe the incident detection and auto-recovery process.*
+
+---
+
+## 📸 Platform Visuals (Screenshots)
+
+Below are graphical captures of the platform interfaces in action:
+
+### GitOps Dependency Graph (ArgoCD)
+![ArgoCD Application Dependency Graph](screenshots/argocd.png)
+
+### Observability Dashboard (Grafana)
+![Grafana Kubernetes Compute Resources](screenshots/grafana.png)
+
+*(Note: Save your PNG screenshots in a folder named `screenshots` in this repository and name them `argocd.png` and `grafana.png` for them to appear here!)*
