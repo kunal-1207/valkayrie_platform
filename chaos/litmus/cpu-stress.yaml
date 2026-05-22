@@ -1,0 +1,21 @@
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: backend-cpu-stress
+  namespace: sample-app
+spec:
+  appinfo:
+    appns: 'sample-app'
+    applabel: 'app=backend'
+    appkind: 'deployment'
+  engineState: 'active'
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: pod-cpu-hog
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: '60'
+            - name: CPU_CORES
+              value: '1'

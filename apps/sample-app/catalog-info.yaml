@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sample-app
+  description: A sample full-stack application generating metrics and logs for Valkyrie Platform
+  annotations:
+    github.com/project-slug: valkyrie-platform/sample-app
+    argocd/app-name: sample-app
+    grafana/dashboard-selector: app=sample-app
+spec:
+  type: service
+  lifecycle: experimental
+  owner: guests

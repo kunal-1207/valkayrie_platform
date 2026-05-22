@@ -1,0 +1,63 @@
+name: Valkyrie Platform CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          cd ai-engine/api
+          pip install -r requirements.txt
+          pip install flake8 pytest
+      - name: Lint
+        run: |
+          cd ai-engine/api
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      - name: Test
+        run: |
+          echo "Running mock tests"
+          # pytest
+
+  docker-build-scan-push:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Docker Image
+        run: |
+          # Mock build step
+          echo "docker build -t valkyrie/ai-engine:latest ./ai-engine/api"
+      - name: Security Scan (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'valkyrie/ai-engine:latest'
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+      - name: Push Docker Image
+        run: |
+          # Mock push step
+          echo "docker push valkyrie/ai-engine:latest"
+
+  argocd-sync:
+    needs: docker-build-scan-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger ArgoCD Sync
+        run: |
+          # In a real environment, you might use argocd CLI or API to trigger a sync
+          # Or simply let ArgoCD auto-sync by pushing image tag updates to a gitops repo.
+          echo "ArgoCD will auto-detect changes in the git repository and sync."

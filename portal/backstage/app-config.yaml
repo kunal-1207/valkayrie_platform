@@ -1,0 +1,46 @@
+app:
+  title: Valkyrie Developer Portal
+  baseUrl: http://localhost:3000
+
+organization:
+  name: Valkyrie Platform
+
+backend:
+  baseUrl: http://localhost:7007
+  listen:
+    port: 7007
+
+# Integrations for Valkyrie
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
+
+catalog:
+  locations:
+    # Local services catalog
+    - type: file
+      target: ../../apps/sample-app/catalog-info.yaml
+
+proxy:
+  '/grafana':
+    target: 'http://localhost:3000' # Assuming grafana is port-forwarded
+    changeOrigin: true
+  '/argocd':
+    target: 'https://localhost:8081' # Assuming ArgoCD is port-forwarded
+    changeOrigin: true
+  '/ai-engine':
+    target: 'http://localhost:8000' # AI Incident Engine API
+    changeOrigin: true
+
+# Navigation links added to the sidebar
+links:
+  - title: Grafana Dashboards
+    url: /grafana
+    icon: dashboard
+  - title: ArgoCD Deployments
+    url: /argocd
+    icon: deploy
+  - title: AI Incident Engine
+    url: /ai-engine/docs
+    icon: warning
