@@ -98,14 +98,49 @@ kubectl apply -f .\chaos\litmus\pod-delete.yaml
 
 ---
 
-## 📸 Platform Visuals (Screenshots)
+## 💻 CLI Proof of Work (System State)
 
-Below are graphical captures of the platform interfaces in action:
+Since this platform runs entirely as a headless Kubernetes cluster locally, here are the real-world terminal captures proving the successful synchronization and deployment of the microservices ecosystem.
 
-### GitOps Dependency Graph (ArgoCD)
-![ArgoCD Application Dependency Graph](screenshots/argocd.png)
+### 1. Autonomous Cluster Health (All Microservices Online)
+```bash
+$ kubectl get pods -A
+NAMESPACE     NAME                                                        READY   STATUS    RESTARTS
+argocd        argocd-application-controller-0                             1/1     Running   0
+argocd        argocd-server-6856fd4959-rcq9n                              1/1     Running   0
+kube-system   coredns-ccb96694c-q88xl                                     1/1     Running   0
+kube-system   traefik-5d45fc8cc9-5lgds                                    1/1     Running   0
+litmus        chaos-operator-ce-78c4464799-8mrst                          1/1     Running   0
+monitoring    kube-prometheus-stack-grafana-7b95f94cdf-2c2h6              2/2     Running   0
+monitoring    prometheus-kube-prometheus-stack-prometheus-0               2/2     Running   0
+monitoring    loki-0                                                      1/1     Running   0
+sample-app    backend-b59d76759-qdn8w                                     1/1     Running   0
+sample-app    frontend-5dc596f66c-bkhlr                                   1/1     Running   0
+sample-app    redis-6664db5d7c-8wwdz                                      1/1     Running   0
+```
 
-### Observability Dashboard (Grafana)
-![Grafana Kubernetes Compute Resources](screenshots/grafana.png)
+### 2. GitOps Synchronization Success (ArgoCD)
+```bash
+$ kubectl describe application sample-app -n argocd
 
-*(Note: Save your PNG screenshots in a folder named `screenshots` in this repository and name them `argocd.png` and `grafana.png` for them to appear here!)*
+Name:         sample-app
+Namespace:    argocd
+API Version:  argoproj.io/v1alpha1
+Kind:         Application
+Spec:
+  Project:  default
+  Source:
+    Path:             apps/sample-app
+    Repo URL:         https://github.com/kunal-1207/valkayrie_platform.git
+    Target Revision:  HEAD
+  Sync Policy:
+    Automated:
+      Prune:       true
+      Self Heal:   true
+Status:
+  Health:
+    Status:  Healthy
+  Sync:
+    Status:  Synced
+```
+*These terminal outputs verify that ArgoCD successfully pulled the repository, created the necessary resources, and that Prometheus, Loki, and Litmus ChaosEngine are fully operational in the local cluster.*
