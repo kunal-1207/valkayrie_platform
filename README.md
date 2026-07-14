@@ -102,6 +102,8 @@ kubectl apply -f .\chaos\litmus\pod-delete.yaml
 
 Since this platform runs entirely as a headless Kubernetes cluster locally, here are the real-world terminal captures proving the successful synchronization and deployment of the microservices ecosystem.
 
+![Valkyrie Platform CLI Output](docs/cli_proof.png)
+
 ### 1. Autonomous Cluster Health (All Microservices Online)
 ```bash
 $ kubectl get pods -A
